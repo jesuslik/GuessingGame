@@ -12,7 +12,10 @@ import java.awt.event.ActionEvent;
 public class GuessingGame extends JFrame {
 	private JTextField textGuess;
 	private JLabel lblOutput;
+	private JButton btnPlayAgain;
+	private JButton btnGuess;
 	private int theNumber;
+	private int numberOfTries;
 	public void checkGuess(){
 		String guessText = textGuess.getText();
 		String message = "";
@@ -23,8 +26,9 @@ public class GuessingGame extends JFrame {
 			else if (guess > theNumber)
 				message = guess + " is too high. Try again.";
 			else {
-				message = guess + " is correct. You win.";
-				newGame();
+				message = guess + " is correct. You win after " + numberOfTries + " tries.";
+				btnPlayAgain.setVisible(true);
+				btnGuess.setVisible(false);
 			}
 		} catch (Exception e) {
 			message = "Enter a whole number between 1 and 100.";
@@ -36,6 +40,7 @@ public class GuessingGame extends JFrame {
 	}
 	public void newGame(){
 		theNumber = (int)(Math.random() * 100 + 1);
+		numberOfTries = 0;
 	}
 	public GuessingGame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,18 +66,31 @@ public class GuessingGame extends JFrame {
 
 		lblOutput = new JLabel("Enter a number above and click Guess!");
 		lblOutput.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblOutput.setBounds(121, 191, 264, 22);
+		lblOutput.setBounds(69, 192, 381, 22);
 		getContentPane().add(lblOutput);
 
-		JButton btnNewButton = new JButton("Guess");
-		btnNewButton.addActionListener(new ActionListener() {
+		btnGuess = new JButton("Guess");
+		btnGuess.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				checkGuess();
+				numberOfTries++;
 			}
 		});
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		btnNewButton.setBounds(171, 142, 116, 29);
-		getContentPane().add(btnNewButton);
+		btnGuess.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnGuess.setBounds(171, 142, 116, 29);
+		getContentPane().add(btnGuess);
+		
+		btnPlayAgain = new JButton("Play Again");
+		btnPlayAgain.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				newGame();
+				btnGuess.setVisible(true);
+			}
+		});
+		btnPlayAgain.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnPlayAgain.setBounds(171, 142, 116, 29);
+		getContentPane().add(btnPlayAgain);
+		btnPlayAgain.setVisible(false);
 	}
 
 	public static void main(String[] args) {
